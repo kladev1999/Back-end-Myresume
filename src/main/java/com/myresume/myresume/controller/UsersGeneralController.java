@@ -57,7 +57,7 @@ public class UsersGeneralController {
     UersGeneralEntity usersGen = userRepository
       .findById(usersGeneralID)
       .orElseThrow();
-
+    usersGen.setUpdateAt(LocalDateTime.now());
     usersGen.setUserGenFirstName(usersGeneralEdit.getUserGenFirstName());
     usersGen.setUserGenLastName(usersGeneralEdit.getUserGenLastName());
     usersGen.setUsersGenCompanyName(usersGeneralEdit.getUsersGenCompanyName());
