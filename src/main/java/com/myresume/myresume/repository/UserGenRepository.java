@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface UserGenRepository
   extends JpaRepository<UersGeneralEntity, Integer> {
   @Query(
-    value = "SELECT * FROM uers_general WHERE is_active = FALSE",
+    value = "SELECT * FROM uers_general WHERE is_active = TRUE",
     nativeQuery = true
   )
   List<UersGeneralEntity> getUsersGeneral();

@@ -43,7 +43,8 @@ public class UsersGeneralController {
   public UersGeneralEntity createUsersGenaral(
     @RequestBody UersGeneralEntity usersGeneral
   ) throws Exception {
-    usersGeneral.setActive(false);
+    usersGeneral.setUserGenneralRole(true);
+    usersGeneral.setActive(true);
     usersGeneral.setCreateAt(LocalDateTime.now());
 
     return userRepository.save(usersGeneral);
@@ -75,7 +76,7 @@ public class UsersGeneralController {
     UersGeneralEntity usersGen = userRepository
       .findById(usersGeneralID)
       .orElseThrow();
-    usersGen.setActive(true);
+    usersGen.setActive(false);
 
     userRepository.save(usersGen);
     Map<String, Boolean> response = new HashMap<>();

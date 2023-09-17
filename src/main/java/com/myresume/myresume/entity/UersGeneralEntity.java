@@ -39,6 +39,9 @@ public class UersGeneralEntity {
   @Column(length = 50)
   private String usersGenEmail;
 
+  @Column(length = 1)
+  private boolean isUserGenneralRole;
+
   @Column(length = 50)
   private LocalDateTime createAt;
 
