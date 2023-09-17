@@ -31,8 +31,9 @@ public class SperaTimeController {
   }
 
   @PostMapping("/sparetime")
-  public SparetimeEntity createUsersJob(@RequestBody SparetimeEntity sparetime)
-    throws Exception {
+  public SparetimeEntity createSparetimeForUserJob(
+    @RequestBody SparetimeEntity sparetime
+  ) throws Exception {
     sparetime.setSpareTime_status(true);
 
     return sparetimeRepository.save(sparetime);
