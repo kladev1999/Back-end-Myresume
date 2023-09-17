@@ -59,6 +59,7 @@ public class UsersGeneralController {
       .findById(usersGeneralID)
       .orElseThrow();
     usersGen.setUpdateAt(LocalDateTime.now());
+    usersGen.setUserGenImg(usersGeneralEdit.getUserGenImg());
     usersGen.setUserGenFirstName(usersGeneralEdit.getUserGenFirstName());
     usersGen.setUserGenLastName(usersGeneralEdit.getUserGenLastName());
     usersGen.setUsersGenCompanyName(usersGeneralEdit.getUsersGenCompanyName());
