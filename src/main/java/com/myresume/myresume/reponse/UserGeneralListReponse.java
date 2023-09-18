@@ -1,24 +1,23 @@
 package com.myresume.myresume.reponse;
 
 import com.myresume.myresume.entity.UersGeneralEntity;
-import com.myresume.myresume.entity.UsersJobEntity;
 import java.util.List;
 import lombok.Data;
 
 @Data
-public class UserGeneralResponse {
+public class UserGeneralListReponse {
 
   private String message;
   private String status;
-  private UersGeneralEntity data;
+  private List<UersGeneralEntity> data;
 
-  public UserGeneralResponse(
+  public UserGeneralListReponse(
     String message,
     String status,
-    UersGeneralEntity data2
+    List<UersGeneralEntity> data
   ) {
     this.message = message;
     this.status = status;
-    this.data = data2;
+    this.data = data;
   }
 }

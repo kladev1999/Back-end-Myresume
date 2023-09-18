@@ -42,9 +42,7 @@ public class SperaTimeController {
       userJob_id
     );
 
-    return ResponseEntity
-      .status(HttpStatus.UNAUTHORIZED)
-      .body(new SpareTimeReponse("ok", "200", data));
+    return ResponseEntity.ok(new SpareTimeReponse("ok", "200", data));
   }
 
   @PostMapping("/sparetime")
@@ -54,7 +52,7 @@ public class SperaTimeController {
     sparetime.setSpareTime_status(true);
     sparetimeRepository.save(sparetime);
     Map<String, String> response = new HashMap<>();
-    response.put("add spare time", "successfully");
+    response.put("message", "successfully");
     return ResponseEntity.ok(response);
   }
 }

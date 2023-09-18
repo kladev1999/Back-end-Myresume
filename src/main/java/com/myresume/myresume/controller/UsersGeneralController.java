@@ -2,6 +2,8 @@ package com.myresume.myresume.controller;
 
 import com.myresume.myresume.entity.SparetimeEntity;
 import com.myresume.myresume.entity.UersGeneralEntity;
+import com.myresume.myresume.reponse.SpareTimeReponse;
+import com.myresume.myresume.reponse.UserGeneralListReponse;
 import com.myresume.myresume.reponse.UserGeneralResponse;
 import com.myresume.myresume.repository.UserGenRepository;
 import java.time.LocalDateTime;
@@ -9,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,20 +30,22 @@ public class UsersGeneralController {
   UserGenRepository userRepository;
 
   @GetMapping("/usersGenaral")
-  public List<UersGeneralEntity> getUsersGeneral() {
+  public ResponseEntity<UserGeneralListReponse> getUsersGeneral() {
     List<UersGeneralEntity> data = userRepository.getUsersGeneral();
 
-    return data;
+    return ResponseEntity
+      .status(HttpStatus.UNAUTHORIZED)
+      .body(new UserGeneralListReponse("ok", "200", data));
   }
 
   @GetMapping("/usersGenaral/{usersGeneralID}")
-  public ResponseEntity<UersGeneralEntity> getUsersGenaralById(
+  public ResponseEntity<UserGeneralResponse> getUsersGenaralById(
     @PathVariable Integer usersGeneralID
   ) {
     UersGeneralEntity uersGeneral = userRepository
       .findById(usersGeneralID)
       .orElseThrow();
-    return ResponseEntity.ok(uersGeneral);
+    return ResponseEntity.ok(new UserGeneralResponse("ok", "200", uersGeneral));
   }
 
   @PostMapping("/usersGenaral")
@@ -56,7 +61,7 @@ public class UsersGeneralController {
   }
 
   @PutMapping("/usersGenaral/{usersGeneralID}")
-  public ResponseEntity<UersGeneralEntity> updateUersGeneral(
+  public ResponseEntity<UserGeneralResponse> updateUersGeneral(
     @PathVariable Integer usersGeneralID,
     @RequestBody UersGeneralEntity usersGeneralEdit
   ) {
@@ -72,7 +77,9 @@ public class UsersGeneralController {
     usersGen.setUsersGenEmail(usersGeneralEdit.getUsersGenEmail());
 
     UersGeneralEntity updateUersGeneral = userRepository.save(usersGen);
-    return ResponseEntity.ok(updateUersGeneral);
+    return ResponseEntity.ok(
+      new UserGeneralResponse("ok", "200", updateUersGeneral)
+    );
   }
 
   @PutMapping("/RemoveUersGeneral/{usersGeneralID}")

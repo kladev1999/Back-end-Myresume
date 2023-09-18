@@ -1,12 +1,15 @@
 package com.myresume.myresume.controller;
 
 import com.myresume.myresume.entity.UsersJobEntity;
+import com.myresume.myresume.reponse.UsersJobListResponse;
+import com.myresume.myresume.reponse.UsersJobResponse;
 import com.myresume.myresume.repository.UserJobRepository;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,18 +27,33 @@ public class UsersJobController {
   UserJobRepository userJobRepository;
 
   @GetMapping("/usersJob")
-  public List<UsersJobEntity> getAllUsersJob() {
-    return userJobRepository.getUsersJob();
+  public ResponseEntity<UsersJobListResponse> getAllUsersJob() {
+    List<UsersJobEntity> uersJob = userJobRepository.getUsersJob();
+    return ResponseEntity
+      .status(HttpStatus.UNAUTHORIZED)
+      .body(new UsersJobListResponse("ok", "200", uersJob));
   }
 
   @GetMapping("/usersJob/{usersJobID}")
-  public ResponseEntity<UsersJobEntity> getUsersJobById(
+  public ResponseEntity<UsersJobResponse> getUsersJobById(
     @PathVariable Integer usersJobID
   ) {
     UsersJobEntity uersJob = userJobRepository
       .findById(usersJobID)
       .orElseThrow();
-    return ResponseEntity.ok(uersJob);
+    return ResponseEntity
+      .status(HttpStatus.UNAUTHORIZED)
+      .body(new UsersJobResponse("ok", "200", uersJob));
+  }
+
+  @GetMapping("/usersJobByname/{usersJobName}")
+  public ResponseEntity<UsersJobListResponse> getUsersJobByName(
+    @PathVariable String usersJobName
+  ) {
+    List<UsersJobEntity> uersJob = userJobRepository.getByName(usersJobName);
+    return ResponseEntity
+      .status(HttpStatus.UNAUTHORIZED)
+      .body(new UsersJobListResponse("ok", "200", uersJob));
   }
 
   @PostMapping("/usersJob")
@@ -49,7 +67,7 @@ public class UsersJobController {
   }
 
   @PutMapping("/usersJob/{usersJobID}")
-  public ResponseEntity<UsersJobEntity> updateUersJob(
+  public ResponseEntity<UsersJobResponse> updateUersJob(
     @PathVariable Integer usersJobID,
     @RequestBody UsersJobEntity usersJobEdit
   ) {
@@ -64,7 +82,9 @@ public class UsersJobController {
     usersJob.setUsersJobEmail(usersJobEdit.getUsersJobEmail());
 
     UsersJobEntity updateUersJob = userJobRepository.save(usersJob);
-    return ResponseEntity.ok(updateUersJob);
+    return ResponseEntity
+      .status(HttpStatus.UNAUTHORIZED)
+      .body(new UsersJobResponse("ok", "200", updateUersJob));
   }
 
   @PutMapping("/RemoveusersJob/{usersJobID}")
