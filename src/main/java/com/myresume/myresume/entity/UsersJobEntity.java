@@ -1,6 +1,7 @@
 package com.myresume.myresume.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.Column;
@@ -39,6 +40,7 @@ public class UsersJobEntity {
   @Column(length = 50)
   private String usersJobPhone;
 
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   @Column(length = 50)
   private String usersJobPassword;
 

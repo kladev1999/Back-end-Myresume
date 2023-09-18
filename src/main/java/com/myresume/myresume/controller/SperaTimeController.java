@@ -1,9 +1,14 @@
 package com.myresume.myresume.controller;
 
 import com.myresume.myresume.entity.SparetimeEntity;
+import com.myresume.myresume.reponse.SpareTimeReponse;
 import com.myresume.myresume.repository.SparetimeRepository;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,23 +24,37 @@ public class SperaTimeController {
   SparetimeRepository sparetimeRepository;
 
   @GetMapping("/sparetime")
-  public List<SparetimeEntity> getSpareTime() {
-    return sparetimeRepository.findAll();
+  public ResponseEntity<SpareTimeReponse> getSpareTime() {
+    List<SparetimeEntity> data = sparetimeRepository.findAll();
+
+    //return ResponseEntity.ok(new SpareTimeReponse("ok", "200", data));
+
+    return ResponseEntity
+      .status(HttpStatus.UNAUTHORIZED)
+      .body(new SpareTimeReponse("ok", "200", data));
   }
 
   @GetMapping("/sparetimeForUserJob/{userJob_id}")
-  public List<SparetimeEntity> getSparetimeForUserJob(
+  public ResponseEntity<SpareTimeReponse> getSparetimeForUserJob(
     @PathVariable int userJob_id
   ) {
-    return sparetimeRepository.SparetimeForUserJob(userJob_id);
+    List<SparetimeEntity> data = sparetimeRepository.SparetimeForUserJob(
+      userJob_id
+    );
+
+    return ResponseEntity
+      .status(HttpStatus.UNAUTHORIZED)
+      .body(new SpareTimeReponse("ok", "200", data));
   }
 
   @PostMapping("/sparetime")
-  public SparetimeEntity createSparetimeForUserJob(
+  public ResponseEntity<Map<String, String>> createSparetimeForUserJob(
     @RequestBody SparetimeEntity sparetime
   ) throws Exception {
     sparetime.setSpareTime_status(true);
-
-    return sparetimeRepository.save(sparetime);
+    sparetimeRepository.save(sparetime);
+    Map<String, String> response = new HashMap<>();
+    response.put("add spare time", "successfully");
+    return ResponseEntity.ok(response);
   }
 }

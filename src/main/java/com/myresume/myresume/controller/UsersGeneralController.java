@@ -1,6 +1,8 @@
 package com.myresume.myresume.controller;
 
+import com.myresume.myresume.entity.SparetimeEntity;
 import com.myresume.myresume.entity.UersGeneralEntity;
+import com.myresume.myresume.reponse.UserGeneralResponse;
 import com.myresume.myresume.repository.UserGenRepository;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -26,7 +28,9 @@ public class UsersGeneralController {
 
   @GetMapping("/usersGenaral")
   public List<UersGeneralEntity> getUsersGeneral() {
-    return userRepository.getUsersGeneral();
+    List<UersGeneralEntity> data = userRepository.getUsersGeneral();
+
+    return data;
   }
 
   @GetMapping("/usersGenaral/{usersGeneralID}")
@@ -40,14 +44,15 @@ public class UsersGeneralController {
   }
 
   @PostMapping("/usersGenaral")
-  public UersGeneralEntity createUsersGenaral(
+  public ResponseEntity<UserGeneralResponse> createUsersGenaral(
     @RequestBody UersGeneralEntity usersGeneral
   ) throws Exception {
     usersGeneral.setUserGenneralRole(true);
     usersGeneral.setActive(true);
     usersGeneral.setCreateAt(LocalDateTime.now());
+    UersGeneralEntity data = userRepository.save(usersGeneral);
 
-    return userRepository.save(usersGeneral);
+    return ResponseEntity.ok(new UserGeneralResponse("ok", "200", data));
   }
 
   @PutMapping("/usersGenaral/{usersGeneralID}")
