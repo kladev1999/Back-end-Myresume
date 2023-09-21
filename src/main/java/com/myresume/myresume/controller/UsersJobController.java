@@ -1,5 +1,6 @@
 package com.myresume.myresume.controller;
 
+import com.myresume.myresume.config.SecurityConfig;
 import com.myresume.myresume.entity.UsersJobEntity;
 import com.myresume.myresume.reponse.UsersJobListResponse;
 import com.myresume.myresume.reponse.UsersJobResponse;
@@ -11,6 +12,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +29,9 @@ public class UsersJobController {
 
   @Autowired
   UserJobRepository userJobRepository;
+
+  @Autowired
+  SecurityConfig securityConfig;
 
   @GetMapping("/usersJob")
   public ResponseEntity<UsersJobListResponse> getAllUsersJob() {
@@ -59,6 +64,12 @@ public class UsersJobController {
   @PostMapping("/usersJob")
   public UsersJobEntity createUsersJob(@RequestBody UsersJobEntity userjob)
     throws Exception {
+    BCryptPasswordEncoder passwordEncoder = securityConfig.passwordEncoder();
+
+    String hashedPassword = passwordEncoder.encode(
+      userjob.getUsersJobPassword()
+    );
+    userjob.setUsersJobPassword(hashedPassword);
     userjob.setUserJobRole(true);
     userjob.setActive(true);
     userjob.setCreateAt(LocalDateTime.now());

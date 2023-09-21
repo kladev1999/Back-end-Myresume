@@ -19,7 +19,7 @@ public class UersGeneralEntity {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer userGen_id;
 
-  @Column(length = 255)
+  @Column(nullable = false, length = 255)
   private String userGenImg;
 
   @Column(length = 50)

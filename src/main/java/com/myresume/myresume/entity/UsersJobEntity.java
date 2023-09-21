@@ -10,8 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
@@ -41,7 +39,7 @@ public class UsersJobEntity {
   private String usersJobPhone;
 
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-  @Column(length = 50)
+  @Column(length = 255)
   private String usersJobPassword;
 
   @Column(length = 50)

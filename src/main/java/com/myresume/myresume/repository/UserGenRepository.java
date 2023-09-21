@@ -12,4 +12,6 @@ public interface UserGenRepository
     nativeQuery = true
   )
   List<UersGeneralEntity> getUsersGeneral();
+
+  UersGeneralEntity findByUsersGenPhone(String usersGenPhone);
 }

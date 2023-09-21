@@ -1,8 +1,7 @@
 package com.myresume.myresume.controller;
 
-import com.myresume.myresume.entity.SparetimeEntity;
+import com.myresume.myresume.config.SecurityConfig;
 import com.myresume.myresume.entity.UersGeneralEntity;
-import com.myresume.myresume.reponse.SpareTimeReponse;
 import com.myresume.myresume.reponse.UserGeneralListReponse;
 import com.myresume.myresume.reponse.UserGeneralResponse;
 import com.myresume.myresume.repository.UserGenRepository;
@@ -13,6 +12,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +30,9 @@ public class UsersGeneralController {
 
   @Autowired
   UserGenRepository userRepository;
+
+  @Autowired
+  SecurityConfig securityConfig;
 
   @GetMapping("/usersGenaral")
   public ResponseEntity<UserGeneralListReponse> getUsersGeneral() {
@@ -54,9 +57,15 @@ public class UsersGeneralController {
   public ResponseEntity<UserGeneralResponse> createUsersGenaral(
     @RequestBody UersGeneralEntity usersGeneral
   ) throws Exception {
-    usersGeneral.setUserGenneralRole(true);
+    BCryptPasswordEncoder passwordEncoder = securityConfig.passwordEncoder();
+
+    String hashedPassword = passwordEncoder.encode(
+      usersGeneral.getUsersPassword()
+    );
+    usersGeneral.setUsersPassword(hashedPassword);
     usersGeneral.setActive(true);
     usersGeneral.setCreateAt(LocalDateTime.now());
+
     UersGeneralEntity data = userRepository.save(usersGeneral);
 
     return ResponseEntity.ok(new UserGeneralResponse("ok", "200", data));
@@ -71,12 +80,12 @@ public class UsersGeneralController {
       .findById(usersGeneralID)
       .orElseThrow();
     usersGen.setUpdateAt(LocalDateTime.now());
-    usersGen.setUserGenImg(usersGeneralEdit.getUserGenImg());
-    usersGen.setUserGenFirstName(usersGeneralEdit.getUserGenFirstName());
-    usersGen.setUserGenLastName(usersGeneralEdit.getUserGenLastName());
-    usersGen.setUsersGenCompanyName(usersGeneralEdit.getUsersGenCompanyName());
-    usersGen.setUsersGenPhone(usersGeneralEdit.getUsersGenPhone());
-    usersGen.setUsersGenEmail(usersGeneralEdit.getUsersGenEmail());
+    usersGen.setUserImg(usersGeneralEdit.getUserImg());
+    usersGen.setUserFirstName(usersGeneralEdit.getUserFirstName());
+    usersGen.setUserLastName(usersGeneralEdit.getUserLastName());
+    usersGen.setUsersCompanyName(usersGeneralEdit.getUsersCompanyName());
+    usersGen.setUsersPhone(usersGeneralEdit.getUsersPhone());
+    usersGen.setUsersEmail(usersGeneralEdit.getUsersEmail());
 
     UersGeneralEntity updateUersGeneral = userRepository.save(usersGen);
     return ResponseEntity.ok(
